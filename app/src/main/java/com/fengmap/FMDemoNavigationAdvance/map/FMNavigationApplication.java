@@ -1,6 +1,7 @@
 package com.fengmap.FMDemoNavigationAdvance.map;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -53,6 +54,7 @@ public class FMNavigationApplication extends BaseActivity implements
     private String mLastDescription;
 
     private SpeechSynthesizer mTts;
+    public static FMActualNavigation sActualNavigation;
 
 
     @Override
@@ -76,7 +78,8 @@ public class FMNavigationApplication extends BaseActivity implements
         ViewHelper.setViewCheckedChangeListener(FMNavigationApplication.this, R.id.btn_view, this);
 
         // 创建模拟导航对象
-        mNavigation = new FMSimulateNavigation(mFMMap);
+    //    mNavigation = new FMSimulateNavigation(mFMMap);
+        mNavigation=new FMActualNavigation(mFMMap);
 
 
         // 创建模拟导航配置对象
@@ -112,9 +115,40 @@ public class FMNavigationApplication extends BaseActivity implements
 
     @Override
     public void startNavigation() {
-        FMSimulateNavigation simulateNavigation = (FMSimulateNavigation) mNavigation;
-        // 3米每秒。
-        simulateNavigation.simulate(3.0f);
+//        FMSimulateNavigation simulateNavigation = (FMSimulateNavigation) mNavigation;
+//        // 3米每秒。
+//        simulateNavigation.simulate(3.0f);
+        FMActualNavigation actualNavigation=(FMActualNavigation)mNavigation;
+        sActualNavigation=actualNavigation;
+        actualNavigation.start();
+//        FMGeoCoord my = new FMGeoCoord(1,
+//                new FMMapCoord(12961777.666, 4861899));
+        ///*********  12961647.576796599, 4861814.63807118
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FMNavigationApplication.sActualNavigation.locate(new FMGeoCoord(1,
+                        new FMMapCoord(12961650.576796599, 4861814.63807118)),270);
+            }
+        },2000);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FMNavigationApplication.sActualNavigation.locate(new FMGeoCoord(1,
+                        new FMMapCoord(12961654.576796599,4861814.63807118)),270);
+            }
+        },6000);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FMNavigationApplication.sActualNavigation.locate(new FMGeoCoord(1,
+                        new FMMapCoord(12961658.576796599,4861819.63807118)),320);
+            }
+        },10000);
+
+
+
     }
 
     /**

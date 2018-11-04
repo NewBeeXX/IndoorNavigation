@@ -6,6 +6,7 @@ import android.view.View;
 import com.fengmap.FMDemoNavigationAdvance.R;
 import com.fengmap.FMDemoNavigationAdvance.utils.ConvertUtils;
 import com.fengmap.FMDemoNavigationAdvance.utils.ViewHelper;
+import com.fengmap.android.analysis.navi.FMActualNavigation;
 import com.fengmap.android.analysis.navi.FMNaviOption;
 import com.fengmap.android.analysis.navi.FMNavigationInfo;
 import com.fengmap.android.analysis.navi.FMSimulateNavigation;
@@ -52,6 +53,7 @@ public class FMNavigationFirstPerson extends BaseActivity implements View.OnClic
 
         // 创建模拟导航对象
         mNavigation = new FMSimulateNavigation(mFMMap);
+       // mNavigation =new FMActualNavigation(mFMMap);
 
         // 创建模拟导航配置对象
         mNaviOption = new FMNaviOption();
@@ -85,6 +87,8 @@ public class FMNavigationFirstPerson extends BaseActivity implements View.OnClic
         FMSimulateNavigation simulateNavigation = (FMSimulateNavigation) mNavigation;
         // 3米每秒。
         simulateNavigation.simulate(3.0f);
+        /*final FMActualNavigation actualNavigation = (FMActualNavigation) mNavigation;
+        actualNavigation.start();*/
     }
 
     @Override
