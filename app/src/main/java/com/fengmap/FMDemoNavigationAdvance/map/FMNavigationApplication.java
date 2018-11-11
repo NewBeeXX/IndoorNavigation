@@ -285,6 +285,12 @@ public class FMNavigationApplication extends BaseActivity implements
             break;
             case R.id.btn_locate: {
                 setFollowState(isChecked);
+                try{
+                    GetLocation();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
             break;
             default:
@@ -408,10 +414,13 @@ public class FMNavigationApplication extends BaseActivity implements
     }
 
     //定位
-    public void GetLocation(View source) throws MalformedURLException {
+    public void GetLocation(/*View source*/) throws MalformedURLException {
+        log("点击定位了");
         if (flag) {
+            log("flag is true");
             setFlag();
             if (!isLocating) {
+                log("locating 这里");
                // viewHandler.sendEmptyMessage(LOCATION_START);
                 startService(new Intent(this, StepCountLocationService.class));
                 receiver = new MyReceiver();
@@ -428,6 +437,7 @@ public class FMNavigationApplication extends BaseActivity implements
                 stopService(new Intent(this, StepCountLocationService.class));
                 isLocating = false;
                 isFirstLocating = true;
+                log("停了");
             }
             new Handler().postDelayed(new Runnable() {
 
@@ -441,6 +451,10 @@ public class FMNavigationApplication extends BaseActivity implements
 
     }
 
+    void log(String s){
+        Log.v("AAAA",s);
+    }
+
     //获取广播数据
     private class MyReceiver extends BroadcastReceiver {
         @Override
@@ -451,6 +465,7 @@ public class FMNavigationApplication extends BaseActivity implements
             double ay = bundle.getDouble("ay");
             int az = bundle.getInt("az");
             int astate = bundle.getInt("astate");
+            Log.v("AAAA","x="+ax+"y="+ay+"z="+az);
             switch (astate) {
                 case 10086:
                     Log.v("AAAA","x="+ax+"y="+ay+"z="+az);

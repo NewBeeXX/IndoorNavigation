@@ -302,6 +302,7 @@ public class StepCountLocationService extends Service {
                     intent.putExtra("degree", lastDegree);
                     intent.putExtra("astate", 10086);
                     intent.setAction("com.example.amap.service.StepCountLocationService");
+                    Log.v("AAAA","发广播");
                     sendOrderedBroadcast(intent, null);
                     int zTemp=stepLocation.lastAMapPoint.getZ();
                     stepLocation.lastAMapPoint =new AMapPoint(xMap,yMap,zTemp,lastDegree,step);

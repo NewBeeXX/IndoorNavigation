@@ -31,7 +31,7 @@
         app:checked_bkg="@drawable/position_cilck"
         app:default_state="2"
         app:unchecked_bkg="@drawable/position"
-        android:onClick="GetLocation"/>
+        />
 
     <FrameLayout
         android:id="@+id/layout_group_control"
