@@ -16,6 +16,26 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_LIFE_CARDS" />
+    <uses-permission android:name="android.permission.WRITE_LIFE_CARDS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+
     <application
         android:name=".DemoApplication"
         android:allowBackup="true"
@@ -23,7 +43,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <uses-library android:name="com.qx.wz" />
+        <uses-library android:name="com.pop.android" />
+        <uses-library android:name="com.taobao.aliglmap.mapcore" />
+        <uses-library android:name="com.loopj.android.http" />
+        <uses-library android:name="com.android.internal" />
         <!-- 这里输入秘钥 -->
         <meta-data
             android:name="com.fengmap.mapapi.appkey"
@@ -39,6 +63,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".location.StepCountLocationService"/>
         <activity
             android:name=".map.FMNavigationConstraint"
             android:configChanges="orientation|keyboardHidden"
@@ -62,6 +87,7 @@
         <activity android:name=".MapSearchMain" />
         <activity android:name=".map.BaseSearchActivity" />
         <activity android:name=".map.FMSearchAnalysisAssociateBusiness"></activity>
+
     </application>
 
 </manifest>

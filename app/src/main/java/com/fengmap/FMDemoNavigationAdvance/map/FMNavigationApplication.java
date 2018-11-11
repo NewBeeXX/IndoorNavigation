@@ -1,13 +1,21 @@
 package com.fengmap.FMDemoNavigationAdvance.map;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+
 import com.fengmap.FMDemoNavigationAdvance.R;
+import com.fengmap.FMDemoNavigationAdvance.location.StepCountLocationService;
 import com.fengmap.FMDemoNavigationAdvance.utils.ConvertUtils;
 import com.fengmap.FMDemoNavigationAdvance.utils.ViewHelper;
 import com.fengmap.FMDemoNavigationAdvance.widget.ImageViewCheckBox;
@@ -23,6 +31,8 @@ import com.fengmap.android.map.marker.FMLocationMarker;
 import com.fengmap.android.widget.FMSwitchFloorComponent;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechSynthesizer;
+
+import java.net.MalformedURLException;
 
 /**
  * 导航实例
@@ -55,7 +65,17 @@ public class FMNavigationApplication extends BaseActivity implements
 
     private SpeechSynthesizer mTts;
     public static FMActualNavigation sActualNavigation;
+/*****************************************/
+    private boolean flag = true;
+    private boolean isLocating = false;
+    private MyReceiver receiver;
+    private boolean isFirstLocating = true;
+    /*************************************************/
 
+
+    private synchronized void setFlag() {
+        flag = false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +143,7 @@ public class FMNavigationApplication extends BaseActivity implements
         actualNavigation.start();
 //        FMGeoCoord my = new FMGeoCoord(1,
 //                new FMMapCoord(12961777.666, 4861899));
-        ///*********  12961647.576796599, 4861814.63807118
+        ///*********起点：  12961647.576796599, 4861814.63807118
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -386,4 +406,95 @@ public class FMNavigationApplication extends BaseActivity implements
             }
         });
     }
+
+    //定位
+    public void GetLocation(View source) throws MalformedURLException {
+        if (flag) {
+            setFlag();
+            if (!isLocating) {
+               // viewHandler.sendEmptyMessage(LOCATION_START);
+                startService(new Intent(this, StepCountLocationService.class));
+                receiver = new MyReceiver();
+                IntentFilter filter = new IntentFilter();
+                filter.setPriority(30);
+//                filter.addAction("com.example.amap.service.LocationService");
+                filter.addAction("com.example.amap.service.StepCountLocationService");
+                registerReceiver(receiver, filter);
+                isLocating = true;
+            } else {
+               // viewHandler.sendEmptyMessage(LOCATION_CLOST);
+                unregisterReceiver(receiver);
+                //结束服务，如果想让服务一直运行就注销此句
+                stopService(new Intent(this, StepCountLocationService.class));
+                isLocating = false;
+                isFirstLocating = true;
+            }
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    flag = true;
+                }
+            }, 2000);
+        }
+
+
+    }
+
+    //获取广播数据
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+
+            double ax = bundle.getDouble("ax");
+            double ay = bundle.getDouble("ay");
+            int az = bundle.getInt("az");
+            int astate = bundle.getInt("astate");
+            switch (astate) {
+                case 10086:
+                    Log.v("AAAA","x="+ax+"y="+ay+"z="+az);
+//                    viewHandler.sendEmptyMessage(LOCATION_ING);
+//                    if (isFirstLocating) {
+//                        ShowToast(R.string.location_success);
+//                        isFirstLocating = false;
+//                    }
+//                    Message msg = new Message();
+//                    msg.what=10086;
+//                    msg.setData(bundle);//mes利用Bundle传递数据
+//                    Point mapPoint = new Point(LocationToMapX(ax), LocationToMapY(ay));
+//                    ShowLog(mapPoint.toString());
+//                    MyPoint newMyPoint = new MyPoint(MapToMyPointX(mapPoint.getX()), MapToMyPointY(mapPoint.getY()), az);
+//                    ShowLog("zzz:"+newMyPoint.toString());
+//                    if (locateMyPoint!=null && !newMyPoint.equal(locateMyPoint)) {//注意是不等号= =
+//                        Bundle addBundle = new Bundle();
+//                        addBundle.putBoolean("ischanged", true);
+//                        setResultExtras(addBundle);
+//                    }
+//                    viewHandler.sendMessage(msg);
+
+                    break;
+//                case LOCATION_NET_ERROR:
+////					abortBroadcast();
+//                    viewHandler.sendEmptyMessage(LOCATION_NET_ERROR);
+//                    break;
+//                case LOCATION_NO_IN_MAP:
+////					abortBroadcast();
+//                    viewHandler.sendEmptyMessage(LOCATION_NO_IN_MAP);
+//                    break;
+//                case LOCATION_LOCATION_IP_ERROR:
+////					abortBroadcast();
+//                    viewHandler.sendEmptyMessage(LOCATION_LOCATION_IP_ERROR);
+//                    break;
+//                case LOCATION_LOCATION_IP_NOSET:
+////					abortBroadcast();
+//                    viewHandler.sendEmptyMessage(LOCATION_LOCATION_IP_NOSET);
+//                    break;
+//                default:
+////					abortBroadcast();
+//                    break;
+            }
+        }
+    }
+
 }

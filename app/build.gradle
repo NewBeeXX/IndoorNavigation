@@ -24,4 +24,5 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/gson-2.5.jar')
+
 }
