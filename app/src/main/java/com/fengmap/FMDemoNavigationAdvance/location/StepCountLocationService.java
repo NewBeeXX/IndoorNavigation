@@ -77,6 +77,9 @@ public class StepCountLocationService extends Service {
     StepLocation stepLocation=StepLocation.getInstance();
     Handler handler;
     private int oldStep=0;
+
+
+
     public void init(){
         startdate = new Date();
 //        height = (float)data[0];

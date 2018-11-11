@@ -17,7 +17,7 @@ public class StepLocation {
     }
     private StepLocation(){
         Log.i("zjx","StepLocation 初始化");
-        lastAMapPoint=new AMapPoint(0.5,0.5, 0/*Config.CurrentFloorDefault_暂时设0*/,30,0);
+        lastAMapPoint=new AMapPoint(/*0.5,0.5,*/12961647.576796599, 4861814.63807118, 0/*Config.CurrentFloorDefault_暂时设0*/,30,0);
     }
     public static void refresh(){
         LazyHolder.INSTANCE=null;

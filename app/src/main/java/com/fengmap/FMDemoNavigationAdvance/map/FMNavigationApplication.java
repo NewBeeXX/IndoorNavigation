@@ -81,7 +81,7 @@ public class FMNavigationApplication extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_app);
-        mEndCoord = new FMGeoCoord(2, new FMMapCoord(12961662.565714367, 4861818.338024983));
+        mEndCoord = new FMGeoCoord(1, new FMMapCoord(12961662.565714367, 4861818.338024983));
         createSynthesizer();
     }
 
@@ -130,6 +130,7 @@ public class FMNavigationApplication extends BaseActivity implements
         mTotalDistance = mNavigation.getSceneRouteLength();
 
         isMapLoaded = true;
+        sActualNavigation=(FMActualNavigation)mNavigation;
     }
 
 
@@ -139,7 +140,7 @@ public class FMNavigationApplication extends BaseActivity implements
 //        // 3米每秒。
 //        simulateNavigation.simulate(3.0f);
         FMActualNavigation actualNavigation=(FMActualNavigation)mNavigation;
-        sActualNavigation=actualNavigation;
+        //sActualNavigation=actualNavigation;
         actualNavigation.start();
 //        FMGeoCoord my = new FMGeoCoord(1,
 //                new FMMapCoord(12961777.666, 4861899));
@@ -469,6 +470,10 @@ public class FMNavigationApplication extends BaseActivity implements
             switch (astate) {
                 case 10086:
                     Log.v("AAAA","x="+ax+"y="+ay+"z="+az);
+
+                    FMNavigationApplication.sActualNavigation.locate(new FMGeoCoord(1,
+                            new FMMapCoord(ax, ay)),270);
+
 //                    viewHandler.sendEmptyMessage(LOCATION_ING);
 //                    if (isFirstLocating) {
 //                        ShowToast(R.string.location_success);
